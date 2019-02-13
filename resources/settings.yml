@@ -1,7 +1,7 @@
 ---
 # Config by tim03we
 # Do not change the config version!
-version: 1.0.9
+version: 1.1.0
 
 # Activate or deactivate that when teleporting joint to the spawn of a particular world.
 # Use "Your_World_Name" or leave it empty (like: "") to not set a spawn point.
