@@ -1,0 +1,6 @@
+name: AdvancedJoin
+main: tim03we\advancedjoin\AdvancedJoin
+api: [3.0.0, 3.6.1]
+author: tim03we
+version: 1.0.9
+description: A AdvancedJoin Plugin for PocketMine-MP
