@@ -52,11 +52,11 @@ Enable-QuitMessage: "true"
 
 # Decide how the quit messages should be for normal players.
 # Use {player} to show the quited player.
-QuitMessage: "{player} has joined the game as player!"
+QuitMessage: "{player} has left the game as player!"
 
 # Decide which quit messages should be displayed for the team permission (if the player owns them).
 # Use {player} to show the quited player.
-QuitMessage-Staff: "{player} has joined the game as staff!"
+QuitMessage-Staff: "{player} has left the game as staff!"
 
 # Decide which quit messages should be displayed for the OP users.
 # Use {player} to show the quited player.
