@@ -6,14 +6,7 @@ use pocketmine\plugin\PluginBase;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerQuitEvent;
-use pocketmine\Player;
 use pocketmine\utils\Config;
-use pocketmine\event\player\PlayerDropItemEvent;
-use pocketmine\event\player\PlayerExhaustEvent;
-use pocketmine\event\player\PlayerInteractEvent;
-use pocketmine\event\player\PlayerItemUseEvent;
-use pocketmine\inventory\transaction\action\InventoryAction;
-use pocketmine\item\Item;
 use pocketmine\command\ConsoleCommandSender;
 use pocketmine\Server;
 
@@ -33,7 +26,6 @@ class AdvancedJoin extends PluginBase implements Listener {
         $this->configUpdater();
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
         $this->saveResource("settings.yml");
-        $settings = new Config($this->getDataFolder() . "settings.yml", Config::YAML);
     }
 	
     public function onJoin (PlayerJoinEvent $event) {
@@ -41,7 +33,6 @@ class AdvancedJoin extends PluginBase implements Listener {
         $player = $event->getPlayer();
         $name = $player->getName();
         $playerrep = $name;
-        $getarray = array();
         if($settings->get("Spawn-Point") == "") {
             $this->getLogger()->debug("Since no spawn point was set in the config, the player is not teleported.");
         } else {
@@ -53,11 +44,14 @@ class AdvancedJoin extends PluginBase implements Listener {
         }
         if($settings->get("Invetory-Clear") == "true") {
             $player->getInventory()->clearAll();
-        } else if($settings->get("Health") == "true") {
+        }
+        if($settings->get("Health") == "true") {
             $player->setHealth(20);
-        } else if($settings->get("Feed") == "true") {
+        }
+        if($settings->get("Feed") == "true") {
             $player->setFood(20);
-        } else if($settings->get("Welcome-Message" == "")) {
+        }
+        if($settings->get("Welcome-Message" == "")) {
             $this->getLogger()->debug("The player will not receive a welcome message because none has been set in the config.");
         } else {
             $player->sendMessage($settings->get("Welcome-Message"));
