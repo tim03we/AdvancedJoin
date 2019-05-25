@@ -51,9 +51,7 @@ class AdvancedJoin extends PluginBase implements Listener {
         if($settings->get("Feed") == "true") {
             $player->setFood(20);
         }
-        if($settings->get("Welcome-Message" == "")) {
-            $this->getLogger()->debug("The player will not receive a welcome message because none has been set in the config.");
-        } else {
+        if($settings->get("Welcome-Message", !false)) {
             $player->sendMessage($settings->get("Welcome-Message"));
         }
         if($settings->get("Enable-JoinMessage") == "true") {
