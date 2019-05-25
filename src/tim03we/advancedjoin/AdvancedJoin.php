@@ -11,8 +11,8 @@ use pocketmine\command\ConsoleCommandSender;
 
 class AdvancedJoin extends PluginBase implements Listener {
 
-    public function configUpdater(): void {
-		if($this->cfg->get("version") !== "1.1.1"){
+    public function configUpdater() : void {
+		if($this->cfg->get("version") !== "1.1.2"){
 			rename($this->getDataFolder() . "settings.yml", $this->getDataFolder() . "settings_old.yml");
 			$this->saveResource("settings.yml");
             $this->getLogger()->notice("We create a new settings.yml file for you.");
@@ -21,17 +21,17 @@ class AdvancedJoin extends PluginBase implements Listener {
 	}
 
     public function onEnable(){
-        $this->configUpdater();
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
         $this->saveResource("settings.yml");
         $this->cfg = new Config($this->getDataFolder() . "settings.yml", Config::YAML);
+        $this->configUpdater();
     }
 	
     public function onJoin (PlayerJoinEvent $event) {
         $player = $event->getPlayer();
         $name = $player->getName();
         $playerrep = $name;
-        if($this->cfg->get("Spawn-Point") == "") {
+        if($this->cfg->get("Spawn-Point", !false)) {
             $this->getLogger()->debug("Since no spawn point was set in the config, the player is not teleported.");
         } else {
             $this->getServer()->loadLevel($this->cfg->get("Spawn-Point"));
@@ -40,19 +40,19 @@ class AdvancedJoin extends PluginBase implements Listener {
         foreach($this->cfg->get("Commands") as $command) {
             $this->getServer()->dispatchCommand(new ConsoleCommandSender(), $this->convert($command, $playerrep));
         }
-        if($this->cfg->get("Invetory-Clear") == "true") {
+        if($this->cfg->get("Invetory-Clear", !false)) {
             $player->getInventory()->clearAll();
         }
-        if($this->cfg->get("Health") == "true") {
+        if($this->cfg->get("Health", !false)) {
             $player->setHealth(20);
         }
-        if($this->cfg->get("Feed") == "true") {
+        if($this->cfg->get("Feed", !false)) {
             $player->setFood(20);
         }
         if($this->cfg->get("Welcome-Message", !false)) {
             $player->sendMessage($this->cfg->get("Welcome-Message"));
         }
-        if($this->cfg->get("Enable-JoinMessage") == "true") {
+        if($this->cfg->get("Enable-JoinMessage", !false)) {
             if($player->isOp(true)) {
                 $event->setJoinMessage($this->convert($this->cfg->get("JoinMessage-OP"), $playerrep));
             } else {
@@ -69,7 +69,7 @@ class AdvancedJoin extends PluginBase implements Listener {
         $player = $event->getPlayer();
         $name = $player->getName();
         $playerrep = $name;
-        if($this->cfg->get("Enable-QuitMessage") == "true") {
+        if($this->cfg->get("Enable-QuitMessage", !false)) {
             if($player->isOp(true)) {
                 $event->setQuitMessage($this->convert($this->cfg->get("QuitMessage-OP"), $playerrep));
             } else {
