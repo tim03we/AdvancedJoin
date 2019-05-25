@@ -10,21 +10,12 @@ This Plugin have many Features:
 - You can set whether to execute commands when joining from the console.
 - You can have your own welcome message displayed.
 
-
+# Permissions
+Permissions | Description
+---------------- | ------------
+staff.join | For the join message
+staff.quit | For the quit message
 ----------------
-
-# AdvancedJoin (German)
-
-AdvancedJoin ist ein Multifunktions Plugin, das beim betreten des Servers, verschiedene Funktionen ausführen kann.
-Dieses Plugin beinhaltet viele Features:
-- Lege die Join und Leave Nachrichten in der Config fest.
-- Lege fest, welche Join und Leave Nachrichten für OP-Spieler, normale Spieler oder welche die eine bestimmte Berechtigung haben, anzeigen soll.
-- Ob das Inventar bei jedem Join geleert werden soll.
-- Entscheide beim betreten des Servers, ob man zu einer bestimmten Welt teleportiert werden soll.
-- Entscheide, ob die Lebensanzeige und die Hungerkeulen aufgefüllt werden sollen.
-- Entscheide ob bei jedem Join ein Befehl von der Konsole gesendet werden soll.
-- Lasse eine eigene Willkommens Nachricht anzeigen.
-
 
 ----------------
 
