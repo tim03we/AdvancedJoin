@@ -13,7 +13,6 @@ class AdvancedJoin extends PluginBase implements Listener {
 
     public function configUpdater() : void {
 		if($this->cfg->get("version") !== "1.1.2"){
-		if($this->cfg->get("version") !== "1.1.1"){
 			rename($this->getDataFolder() . "settings.yml", $this->getDataFolder() . "settings_old.yml");
 			$this->saveResource("settings.yml");
             $this->getLogger()->notice("We create a new settings.yml file for you.");
