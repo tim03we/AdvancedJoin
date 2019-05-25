@@ -15,7 +15,6 @@ Permissions | Description
 ---------------- | ------------
 staff.join | For the join message
 staff.quit | For the quit message
-----------------
 
 ----------------
 
