@@ -11,7 +11,7 @@ use pocketmine\command\ConsoleCommandSender;
 
 class AdvancedJoin extends PluginBase implements Listener {
 
-    public function configUpdater(): void {
+    public function configUpdater() : void {
 		if($this->cfg->get("version") !== "1.1.1"){
 			rename($this->getDataFolder() . "settings.yml", $this->getDataFolder() . "settings_old.yml");
 			$this->saveResource("settings.yml");
@@ -21,10 +21,10 @@ class AdvancedJoin extends PluginBase implements Listener {
 	}
 
     public function onEnable(){
-        $this->configUpdater();
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
         $this->saveResource("settings.yml");
         $this->cfg = new Config($this->getDataFolder() . "settings.yml", Config::YAML);
+        $this->configUpdater();
     }
 	
     public function onJoin (PlayerJoinEvent $event) {
