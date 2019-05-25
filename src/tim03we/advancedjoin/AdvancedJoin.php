@@ -12,11 +12,8 @@ use pocketmine\command\ConsoleCommandSender;
 class AdvancedJoin extends PluginBase implements Listener {
 
     public function configUpdater() : void {
-<<<<<<< HEAD
 		if($this->cfg->get("version") !== "1.1.2"){
-=======
 		if($this->cfg->get("version") !== "1.1.1"){
->>>>>>> 5de24c384636650186f45d84370f0fb0331bc646
 			rename($this->getDataFolder() . "settings.yml", $this->getDataFolder() . "settings_old.yml");
 			$this->saveResource("settings.yml");
             $this->getLogger()->notice("We create a new settings.yml file for you.");
