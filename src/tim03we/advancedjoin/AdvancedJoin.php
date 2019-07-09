@@ -8,82 +8,76 @@ use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\utils\Config;
 use pocketmine\command\ConsoleCommandSender;
+use pocketmine\Server;
 
 class AdvancedJoin extends PluginBase implements Listener {
 
-    public function configUpdater() : void {
-		if($this->cfg->get("version") !== "1.1.2"){
-			rename($this->getDataFolder() . "settings.yml", $this->getDataFolder() . "settings_old.yml");
-			$this->saveResource("settings.yml");
+    public $settings;
+
+    public function configUpdater(): void {
+        if($this->settings->get("version") !== "1.1.0"){
+            rename($this->getDataFolder() . "settings.yml", $this->getDataFolder() . "settings_old.yml");
+            $this->saveResource("settings.yml");
             $this->getLogger()->notice("We create a new settings.yml file for you.");
             $this->getLogger()->notice("Because the config version has changed. Your old configuration has been saved as settings_old.yml.");
-		}
-	}
+        }
+    }
 
     public function onEnable(){
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
         $this->saveResource("settings.yml");
-        $this->cfg = new Config($this->getDataFolder() . "settings.yml", Config::YAML);
+        $this->settings = new Config($this->getDataFolder() . "settings.yml", Config::YAML);
         $this->configUpdater();
     }
-	
+
     public function onJoin (PlayerJoinEvent $event) {
-        $player = $event->getPlayer();
-        $name = $player->getName();
-        $playerrep = $name;
-        if($this->cfg->get("Spawn-Point", !false)) {
+        if($this->settings->get("Spawn-Point") == "") {
             $this->getLogger()->debug("Since no spawn point was set in the config, the player is not teleported.");
         } else {
-            $this->getServer()->loadLevel($this->cfg->get("Spawn-Point"));
-            $player->teleport($this->getServer()->getLevelByName($this->cfg->get("Spawn-Point"))->getSafeSpawn());
+            $this->getServer()->loadLevel($this->settings->get("Spawn-Point"));
+            $event->getPlayer()->teleport($this->getServer()->getLevelByName($this->settings->get("Spawn-Point"))->getSafeSpawn());
         }
-        foreach($this->cfg->get("Commands") as $command) {
-            $this->getServer()->dispatchCommand(new ConsoleCommandSender(), $this->convert($command, $playerrep));
+        foreach($this->settings->get("Commands") as $command) {
+            Server::getInstance()->dispatchCommand(new ConsoleCommandSender(), str_replace(["{player}", "&"], [$event->getPlayer()->getName(), "§"], $command));
         }
-        if($this->cfg->get("Invetory-Clear", !false)) {
-            $player->getInventory()->clearAll();
+        if($this->settings->get("Invetory-Clear") == "true") {
+            $event->getPlayer()->getPlayer()->getInventory()->clearAll();
         }
-        if($this->cfg->get("Health", !false)) {
-            $player->setHealth(20);
+        if($this->settings->get("Health") == "true") {
+            $event->getPlayer()->setHealth(20);
         }
-        if($this->cfg->get("Feed", !false)) {
-            $player->setFood(20);
+        if($this->settings->get("Feed") == "true") {
+            $event->getPlayer()->setFood(20);
         }
-        if($this->cfg->get("Welcome-Message", !false)) {
-            $player->sendMessage($this->cfg->get("Welcome-Message"));
+        if($this->settings->get("Welcome-Message" == "")) {
+            $this->getLogger()->debug("The player will not receive a welcome message because none has been set in the config.");
+        } else {
+            $event->getPlayer()->sendMessage(str_replace("&", "§", $this->settings->get("Welcome-Message")));
         }
-        if($this->cfg->get("Enable-JoinMessage", !false)) {
-            if($player->isOp(true)) {
-                $event->setJoinMessage($this->convert($this->cfg->get("JoinMessage-OP"), $playerrep));
+        if($this->settings->get("Enable-JoinMessage") == "true") {
+            if($event->getPlayer()->isOp(true)) {
+                $event->setJoinMessage(str_replace(["{player}", "&"], [$event->getPlayer()->getName(), "§"], $this->settings->get("JoinMessage-OP")));
             } else {
-                if($player->hasPermission("staff.join")) {
-                    $event->setJoinMessage($this->convert($this->cfg->get("JoinMessage-Staff"), $playerrep));
+                if($event->getPlayer()->hasPermission("staff.join")) {
+                    $event->setJoinMessage(str_replace(["{player}", "&"], [$event->getPlayer()->getName(), "§"], $this->settings->get("JoinMessage-Staff")));
                 } else {
-                    $event->setJoinMessage($this->convert($this->cfg->get("JoinMessage"), $playerrep));
+                    $event->setJoinMessage(str_replace(["{player}", "&"], [$event->getPlayer()->getName(), "§"], $this->settings->get("JoinMessage")));
                 }
             }
         }
     }
 
     public function onQuit(PlayerQuitEvent $event) {
-        $player = $event->getPlayer();
-        $name = $player->getName();
-        $playerrep = $name;
-        if($this->cfg->get("Enable-QuitMessage", !false)) {
-            if($player->isOp(true)) {
-                $event->setQuitMessage($this->convert($this->cfg->get("QuitMessage-OP"), $playerrep));
+        if($this->settings->get("Enable-QuitMessage") == "true") {
+            if($event->getPlayer()->isOp(true)) {
+                $event->setQuitMessage(str_replace(["{player}", "&"], [$event->getPlayer()->getName(), "§"], $this->settings->get("QuitMessage-OP")));
             } else {
-                if($player->hasPermission("staff.quit")) {
-                    $event->setQuitMessage($this->convert($this->cfg->get("QuitMessage-Staff"), $playerrep));
+                if($event->getPlayer()->hasPermission("staff.quit")) {
+                    $event->setQuitMessage(str_replace(["{player}", "&"], [$event->getPlayer()->getName(), "§"], $this->settings->get("QuitMessage-Staff")));
                 } else {
-                    $event->setQuitMessage($this->convert($this->cfg->get("QuitMessage"), $playerrep));
+                    $event->setQuitMessage(str_replace(["{player}", "&"], [$event->getPlayer()->getName(), "§"], $this->settings->get("QuitMessage")));
                 }
             }
         }
     }
-
-    public function convert(string $string, $playerrep): string{
-        $string = str_replace("{player}", $playerrep, $string);
-        return $string;
-	}
 }

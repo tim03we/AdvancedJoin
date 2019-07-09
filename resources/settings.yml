@@ -1,23 +1,23 @@
 ---
 # Config by tim03we
 # Do not change the config version!
-version: 1.1.2
+version: 1.1.0
 
 # Activate or deactivate that when teleporting joint to the spawn of a particular world.
 # Use "Your_World_Name" or leave it empty (like: "") to not set a spawn point.
-Spawn-Point: false
+Spawn-Point: ""
 
 # Decide if the inventory should be emptied for each join.
-# Use true for activate or false for deactivate.
-Inventory-Clear: false
+# Use "true" for activate or "false" for deactivate.
+Inventory-Clear: "false"
 
 # With this feature, you can fill your hearts with every join.
-# Use true for activate or false for deactivate.
-Health: false
+# Use "true" for activate or "false" for deactivate.
+Health: "false"
 
 # With this feature you can fill in your hunger clubs with every join.
-# Use true for activate or false for deactivate.
-Feed: false
+# Use "true" for activate or "false" for deactivate.
+Feed: "false"
 
 # Decide whether commands should be executed when entering the server.
 # Example: (Use {player} to replace the player)
@@ -27,12 +27,12 @@ Feed: false
 Commands: []
 
 # Here you can have a welcome message displayed to the player who entered the server.
-# Set false if you don't want to receive a welcome message.
-Welcome-Message: false
+# Leave it empty (like: "") to not set a welcome message.
+Welcome-Message: ""
 
 
-# Activate or deactivate the join message with true or false.
-Enable-JoinMessage: true
+# Activate or deactivate the join message with "true" or "false".
+Enable-JoinMessage: "true"
 
 # Decide how the join messages should be for normal players.
 # Use {player} to show the joined player.
@@ -47,8 +47,8 @@ JoinMessage-Staff: "{player} has joined the game as staff!"
 JoinMessage-OP: "{player} has joined the game as op!"
 
 
-#Activate or deactivate the quit message with true or false.
-Enable-QuitMessage: true
+#Activate or deactivate the quit message with "true" or "false".
+Enable-QuitMessage: "true"
 
 # Decide how the quit messages should be for normal players.
 # Use {player} to show the quited player.
