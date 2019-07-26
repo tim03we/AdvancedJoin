@@ -15,7 +15,7 @@ class AdvancedJoin extends PluginBase implements Listener {
     public $settings;
 
     public function configUpdater(): void {
-        if($this->settings->get("version") !== "1.1.1"){
+        if($this->settings->get("version") !== "1.2.0"){
             rename($this->getDataFolder() . "settings.yml", $this->getDataFolder() . "settings_old.yml");
             $this->saveResource("settings.yml");
             $this->getLogger()->notice("We create a new settings.yml file for you.");
@@ -37,8 +37,16 @@ class AdvancedJoin extends PluginBase implements Listener {
             $this->getServer()->loadLevel($this->settings->get("Spawn-Point"));
             $event->getPlayer()->teleport($this->getServer()->getLevelByName($this->settings->get("Spawn-Point"))->getSafeSpawn());
         }
-        foreach($this->settings->get("Commands") as $command) {
-            Server::getInstance()->dispatchCommand(new ConsoleCommandSender(), str_replace(["{player}", "&"], [$event->getPlayer()->getName(), "§"], $command));
+        if($this->settings->getNested("Commands.First-Join.enable") == true) {
+            if($event->getPlayer()->hasPlayedBefore() == false) {
+                foreach($this->settings->getNested("Commands.First-Join.commands") as $command) {
+                    Server::getInstance()->dispatchCommand(new ConsoleCommandSender(), str_replace(["{player}", "&"], [$event->getPlayer()->getName(), "§"], $command));
+                }
+            }
+        } else {
+            foreach($this->settings->getNested("Commands.commands") as $command) {
+                Server::getInstance()->dispatchCommand(new ConsoleCommandSender(), str_replace(["{player}", "&"], [$event->getPlayer()->getName(), "§"], $command));
+            }
         }
         if($this->settings->get("Invetory-Clear") == "true") {
             $event->getPlayer()->getPlayer()->getInventory()->clearAll();
